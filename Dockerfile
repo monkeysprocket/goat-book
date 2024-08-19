@@ -16,6 +16,9 @@ RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
 
 COPY src /src
 
+RUN poetry run python manage.py collectstatic
+
 RUN poetry install --without dev
 
+ENV DJANGO_DEBUG_FALSE=1
 CMD poetry run gunicorn --bind :8888 superlists.wsgi:application
