@@ -8,10 +8,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "<4.3"
-selenium = "^4.23.1"
 whitenoise = "^6.7.0"
+gunicorn = "^23.0.0"
 
+
+[tool.poetry.group.dev.dependencies]
+selenium = "^4.23.1"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>= 1.7"]
 build-backend = "poetry.core.masonry.api"
