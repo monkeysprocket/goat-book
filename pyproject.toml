@@ -10,10 +10,12 @@ python = "^3.12"
 django = "<4.3"
 whitenoise = "^6.7.0"
 gunicorn = "^23.0.0"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]
 selenium = "^4.23.1"
+ansible = "^10.4.0"
 
 [build-system]
 requires = ["poetry-core>= 1.7"]
