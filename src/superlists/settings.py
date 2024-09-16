@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if "DJANGO_DEBUG_FALSE" in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-    ALLOWED_HOSTS = [os.environ["DJANGO_ALLOWED_HOST"]]
+    ALLOWED_HOSTS = ["staging.matthewjamesquinn.com", "matthewjamesquinn.com", "www.matthewjamesquinn.com"]
 else:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-9+kz12xgg#$71k&^@&b^ltlco-u=80=h(k+^ry9qrygob!4-3g'
