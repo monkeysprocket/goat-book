@@ -11,7 +11,7 @@ def home_page(request: HttpRequest) -> HttpResponse:
 
 def new_list(request: HttpRequest) -> HttpResponse:
     nulist = List.objects.create()
-    item = Item.objects.create(text=request.POST["item_text"], list=nulist)
+    item = Item(text=request.POST["item_text"], list=nulist)
     try:
         item.full_clean()
         item.save()
@@ -24,10 +24,7 @@ def new_list(request: HttpRequest) -> HttpResponse:
 
 def view_list(request: HttpRequest, list_id: int) -> HttpResponse:
     our_list = List.objects.get(id=list_id)
+    if request.method == "POST":
+        Item.objects.create(text=request.POST["item_text"], list=our_list)
+        return redirect(f"/lists/{our_list.id}/")
     return render(request, "list.html", {"list": our_list})
-
-
-def add_item(request: HttpRequest, list_id: int) -> HttpResponse:
-    our_list = List.objects.get(id=list_id)
-    Item.objects.create(text=request.POST["item_text"], list=our_list)
-    return redirect(f"/lists/{our_list.id}/")
