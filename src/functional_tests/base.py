@@ -1,5 +1,6 @@
 import os
 import time
+from typing import Callable
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -18,6 +19,17 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def tearDown(self):
         self.browser.quit()
+
+    @staticmethod
+    def wait_for(fn: Callable):
+        start_time = time.time()
+        while True:
+            try:
+                return fn()
+            except (AssertionError, WebDriverException):
+                if time.time() - start_time > MAX_WAIT:
+                    raise
+                time.sleep(0.5)
 
     def wait_for_row_in_list_table(self, row_text: str):
         start_time = time.time()
