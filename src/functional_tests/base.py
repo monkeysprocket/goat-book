@@ -20,6 +20,9 @@ class FunctionalTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def get_item_input_box(self):
+        return self.browser.find_element(By.ID, "id_text")
+
     @staticmethod
     def wait_for(fn: Callable):
         start_time = time.time()
