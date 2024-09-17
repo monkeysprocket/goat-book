@@ -16,10 +16,22 @@
                     </h1>
 
                     <form method="POST" action="{% block form_action %}{% endblock %}">
-                        {{ form.text }}
+                        <input
+                            id="id_text"
+                            name="text"
+                            class="form-control
+                                   form-control-lg
+                                   {% if form.errors %}is-invalid{% endif %}"
+                            placeholder="Enter a to-do item"
+                            value="{{ form.text.value }}"
+                            aria-describedby="id_text_feedback"
+                            required
+                        />
                         {% csrf_token %}
                         {% if form.errors %}
-                            <div class="invalid-feedback">{{ form.errors.text }}</div>
+                            <div id="id_text_freedback" class="invalid-feedback">
+                                {{ form.errors.text.0 }}
+                            </div>
                         {% endif %}
                     </form>
                 </div>
