@@ -12,7 +12,7 @@
 
     - name: Build container image locally
       community.docker.docker_image:
-        name: superlists
+        name: "{{ image_name }}"
         source: build
         state: present
         build:
@@ -23,20 +23,20 @@
 
     - name: Export container image locally
       community.docker.docker_image:
-        name: superlists
-        archive_path: /tmp/superlists-img.tar
+        name: "{{ image_name }}"
+        archive_path: /tmp/"{{ image_name }}"-img.tar
         source: local
       delegate_to: 127.0.0.1
 
     - name: upload_image_to_server
       ansible.builtin.copy:
-        src: /tmp/superlists-img.tar
-        dest: /tmp/superlists-img.tar
+        src: /tmp/"{{ image_name }}"-img.tar
+        dest: /tmp/"{{ image_name }}"-img.tar
 
     - name: Import container image on server
       community.docker.docker_image:
-        name: superlists
-        load_path: /tmp/superlists-img.tar
+        name: "{{ image_name }}"
+        load_path: /tmp/"{{ image_name }}"-img.tar
         source: load
         force_source: true
         state: present
@@ -45,31 +45,30 @@
     - name: Ensure .env file exists
       ansible.builtin.template:
         src: env.j2
-        dest: ~/superlists.env
+        dest: ~/{{ env_name }}
         force: false
       vars:
-        host: "{{ inventory_hostname }}"
         secret_key: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
 
     - name: Ensure db.sqlite3 file exists outside container
       ansible.builtin.file:
-        path: /home/mattquinn/db.sqlite3
+        path: /home/mattquinn/{{ db_name }}
         state: touch
 
     - name: Run container
       community.docker.docker_container:
-        name: superlists
-        image: superlists
+        name: "{{ image_name }}"
+        image: "{{ image_name }}"
         state: started
         recreate: true
-        env_file: ~/superlists.env
+        env_file: ~/{{ env_name }}
         mounts:
           - type: bind
-            source: /home/mattquinn/db.sqlite3
-            target: /src/db.sqlite3
-        ports: 80:8888
+            source: /home/mattquinn/{{ db_name }}
+            target: /src/{{ db_name }}
+        ports: "{{ port }}:8888"
 
     - name: Run migration inside container
       community.docker.docker_container_exec:
-        container: superlists
+        container: "{{ image_name }}"
         command: poetry run python ./manage.py migrate

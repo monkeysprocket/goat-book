@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if "DJANGO_DEBUG_FALSE" in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-    ALLOWED_HOSTS = ["staging.matthewjamesquinn.com", "matthewjamesquinn.com", "www.matthewjamesquinn.com"]
+    ALLOWED_HOSTS = os.environ["DJANGO_ALLOWED_HOST"].split(",")
+    DB_NAME = os.environ["DJANGO_DB_NAME"]
 else:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-9+kz12xgg#$71k&^@&b^ltlco-u=80=h(k+^ry9qrygob!4-3g'
@@ -31,6 +32,7 @@ else:
     DEBUG = True
 
     ALLOWED_HOSTS = []
+    DB_NAME = "db.sqlite3"
 
 
 # Application definition
@@ -83,7 +85,7 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / DB_NAME,
     }
 }
 
