@@ -5,4 +5,7 @@ const initialize = (inputSelector) => {
     textInput.oninput = () => {
         textInput.classList.remove("is-invalid");
     };
+    textInput.onclick = () => {
+        textInput.classList.remove("is-invalid");
+    };
 };

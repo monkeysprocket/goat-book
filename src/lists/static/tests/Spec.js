@@ -44,6 +44,13 @@ describe("Superlists tests", () => {
         expect(errorMsg.checkVisibility()).toBe(false);
     });
 
+    it("error message should be hidden on click", () => {
+        initialize(inputSelector);
+        textInput.dispatchEvent(new InputEvent("click"));
+
+        expect(errorMsg.checkVisibility()).toBe(false);
+    })
+
     it("error message should not be hidden before input is fired", () => {
         initialize(inputSelector);
         expect(errorMsg.checkVisibility()).toBe(true);
