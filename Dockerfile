@@ -1,11 +1,12 @@
-FROM python:slim
+FROM python:3.12-slim
 
 RUN pip install poetry==1.7.1
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR="/tmp/poetry_cache"
+    POETRY_CACHE_DIR="/tmp/poetry_cache" \
+    DJANGO_DEBUG_FALSE=1
 
 WORKDIR /src
 
@@ -20,5 +21,4 @@ RUN poetry run python manage.py collectstatic
 
 RUN poetry install --without dev
 
-ENV DJANGO_DEBUG_FALSE=1
 CMD poetry run gunicorn --bind :8888 superlists.wsgi:application
